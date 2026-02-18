@@ -81,7 +81,7 @@ export function OrderFormFull({ customers }: OrderFormFullProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="total_price">Prix total (DH)</Label>
+        <Label htmlFor="total_price">Prix total (€)</Label>
         <Input
           id="total_price"
           name="total_price"

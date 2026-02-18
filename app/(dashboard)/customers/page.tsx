@@ -54,11 +54,11 @@ export default async function CustomersPage() {
                   <div>
                     <p className="font-semibold text-lg">{d.name}</p>
                     <p className="text-sm text-muted-foreground">
-                      {d.total_orders.toFixed(0)} DH de commandes · {d.total_paid.toFixed(0)} DH payé
+                      {d.total_orders.toFixed(0)} € de commandes · {d.total_paid.toFixed(0)} € payé
                     </p>
                   </div>
                   <p className="font-bold text-lg text-[hsl(var(--loss))]">
-                    {d.debt.toFixed(0)} DH
+                    {d.debt.toFixed(0)} €
                   </p>
                 </div>
                 <div className="flex gap-2">

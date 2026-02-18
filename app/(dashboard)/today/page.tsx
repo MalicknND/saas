@@ -75,13 +75,13 @@ export default async function TodayPage() {
           <Card className="rounded-2xl">
             <CardContent className="p-4 text-center">
               <p className="text-xs text-muted-foreground">Reçu</p>
-              <p className="text-lg font-bold">{summary.income.toFixed(0)} DH</p>
+              <p className="text-lg font-bold">{summary.income.toFixed(0)} €</p>
             </CardContent>
           </Card>
           <Card className="rounded-2xl">
             <CardContent className="p-4 text-center">
               <p className="text-xs text-muted-foreground">Dépensé</p>
-              <p className="text-lg font-bold">{summary.expenses.toFixed(0)} DH</p>
+              <p className="text-lg font-bold">{summary.expenses.toFixed(0)} €</p>
             </CardContent>
           </Card>
           <Card className="rounded-2xl">
@@ -92,7 +92,7 @@ export default async function TodayPage() {
                   summary.profit >= 0 ? "text-[hsl(var(--profit))]" : "text-[hsl(var(--loss))]"
                 }`}
               >
-                {summary.profit >= 0 ? "+" : ""}{summary.profit.toFixed(0)} DH
+                {summary.profit >= 0 ? "+" : ""}{summary.profit.toFixed(0)} €
               </p>
             </CardContent>
           </Card>
@@ -142,7 +142,7 @@ export default async function TodayPage() {
                         </span>
                       </div>
                     </div>
-                    <p className="font-bold text-lg">{o.total_price} DH</p>
+                    <p className="font-bold text-lg">{o.total_price} €</p>
                   </div>
                 </Card>
               </Link>

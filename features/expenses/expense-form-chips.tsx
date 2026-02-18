@@ -47,7 +47,7 @@ export function ExpenseFormChips() {
             autoFocus
           />
           <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xl font-medium text-muted-foreground">
-            DH
+            €
           </span>
         </div>
       </div>

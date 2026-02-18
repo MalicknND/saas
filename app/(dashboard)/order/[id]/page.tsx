@@ -72,13 +72,13 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
 
           <div>
             <p className="text-sm text-muted-foreground">Prix total</p>
-            <p className="font-bold text-xl">{order.total_price} DH</p>
+            <p className="font-bold text-xl">{order.total_price} €</p>
           </div>
 
           <div>
             <p className="text-sm text-muted-foreground">Payé / Reste</p>
             <p className="font-semibold">
-              {totalPaid.toFixed(0)} DH payé · <span className={remaining > 0 ? "text-[hsl(var(--loss))]" : "text-[hsl(var(--profit))]"}>{remaining.toFixed(0)} DH restant</span>
+              {totalPaid.toFixed(0)} € payé · <span className={remaining > 0 ? "text-[hsl(var(--loss))]" : "text-[hsl(var(--profit))]"}>{remaining.toFixed(0)} € restant</span>
             </p>
           </div>
 
@@ -107,7 +107,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             {payments.map((p) => (
               <div key={p.id} className="flex justify-between text-sm">
                 <span>{p.paid_at}</span>
-                <span className="font-medium">{p.amount} DH</span>
+                <span className="font-medium">{p.amount} €</span>
               </div>
             ))}
           </div>
