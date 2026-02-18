@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Food Tracker
 
-## Getting Started
+SaaS opérationnel pour vendeurs de cuisine maison : suivi des commandes, dépenses, profit quotidien et dettes clients.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js** (App Router) + TypeScript strict
+- **TailwindCSS** + **shadcn/ui**
+- **Supabase** (PostgreSQL + Auth + RLS)
+- **Zod** + **React Hook Form**
+- Server Actions pour les mutations
+
+## Structure
+
+```
+/app          → Routes (pas de logique métier)
+/components   → Composants UI
+/features     → Modules métier (orders, expenses, customers)
+/services     → Logique métier
+/repositories → Accès base (Supabase uniquement)
+/actions      → Server Actions
+/validators   → Schémas Zod
+/types        → Types partagés
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Variables d'environnement
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cp .env.example .env.local
+```
 
-## Learn More
+Renseignez dans `.env.local` :
+- `NEXT_PUBLIC_SUPABASE_URL` : URL du projet Supabase
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` : Clé anon du projet
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Supabase
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Créez un projet sur [supabase.com](https://supabase.com)
+2. Exécutez les migrations SQL dans l’ordre :
+   - `supabase/migrations/00001_initial_schema.sql`
+   - `supabase/migrations/00002_rls_policies.sql`
+   - `supabase/migrations/00003_profile_on_signup.sql` (optionnel)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Dans Authentication → URL Configuration :
+   - Site URL : `http://localhost:3000` (dev)
+   - Redirect URLs : `http://localhost:3000/**`
 
-## Deploy on Vercel
+### 3. Premier utilisateur et workspace
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Après inscription, créez manuellement un `profile` et un `workspace` (ou implémentez la page `/setup`) :
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```sql
+-- Exemple après un signup (remplacer USER_ID par l’id auth.users)
+INSERT INTO profiles (id, email, full_name)
+VALUES ('USER_ID', 'user@example.com', 'Nom');
+INSERT INTO workspaces (name, owner_id) VALUES ('Mon activité', 'USER_ID');
+```
+
+### 4. Lancer le projet
+
+```bash
+npm install
+npm run dev
+```
+
+Ouvrez [http://localhost:3000](http://localhost:3000).
+
+## Fonctionnalités
+
+- **Commandes** : client, articles, prix, statut, paiements partiels
+- **Dépenses** : montant, catégorie (ingrédients, emballage, transport…), date
+- **Clients** : nom, téléphone, notes
+- **Tableau de bord** : profit quotidien, dette clients
+- **Dettes clients** : calcul automatique (commandes - paiements)
+
+## Architecture
+
+Voir [ARCHITECTURE.md](./ARCHITECTURE.md) pour le détail des couches et la prévention du débit technique.
