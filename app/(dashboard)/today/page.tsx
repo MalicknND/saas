@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { getDailySummary } from "@/services/summary.service";
-import { listOrders } from "@/services/order.service";
-import { listCustomersWithDebt } from "@/services/debt.service";
+import { getTodayDashboard } from "@/services/dashboard.service";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AddOrderButton } from "@/features/add/add-order-button";
@@ -18,25 +16,18 @@ function formatDateFr(dateStr: string) {
 export default async function TodayPage() {
   const today = new Date().toISOString().slice(0, 10);
 
-  let summary: Awaited<ReturnType<typeof getDailySummary>> = { income: 0, expenses: 0, profit: 0 };
-  let orders: Awaited<ReturnType<typeof listOrders>> = [];
+  let summary = { income: 0, expenses: 0, profit: 0 };
+  let orders: Awaited<ReturnType<typeof getTodayDashboard>>["orders"] = [];
   let totalDebt = 0;
   let debtorsCount = 0;
   let error: string | null = null;
 
   try {
-    const [summaryRes, ordersRes, debtsData] = await Promise.all([
-      getDailySummary(today),
-      listOrders({ deliveryDate: today }),
-      listCustomersWithDebt().then((d) => ({
-        total: d.reduce((s, x) => s + x.debt, 0),
-        count: d.length,
-      })),
-    ]);
-    summary = summaryRes;
-    orders = ordersRes;
-    totalDebt = debtsData.total;
-    debtorsCount = debtsData.count;
+    const data = await getTodayDashboard(today);
+    summary = data.summary;
+    orders = data.orders;
+    totalDebt = data.debts.total;
+    debtorsCount = data.debts.count;
   } catch (e) {
     error = e instanceof Error ? e.message : "Erreur";
   }
@@ -86,7 +77,7 @@ export default async function TodayPage() {
             <p className="text-xs opacity-90">Reçu</p>
             <p className="text-lg font-bold">{summary.income.toFixed(0)} €</p>
           </div>
-          <Link href="/expenses" className="rounded-xl bg-white/20 p-4 text-center block active:opacity-90">
+          <Link href="/expenses" className="rounded-xl bg-white/20 p-4 text-center block active:scale-[0.98] transition-transform">
             <p className="text-xs opacity-90">Dépensé</p>
             <p className="text-lg font-bold">{summary.expenses.toFixed(0)} €</p>
           </Link>
@@ -100,7 +91,7 @@ export default async function TodayPage() {
               {summary.profit >= 0 ? "+" : ""}{summary.profit.toFixed(0)} €
             </p>
           </div>
-          <Link href="/debts" className="rounded-xl bg-white/20 p-4 text-center block active:opacity-90">
+          <Link href="/debts" className="rounded-xl bg-white/20 p-4 text-center block active:scale-[0.98] transition-transform">
             <p className="text-xs opacity-90">À recevoir</p>
             <p className="text-lg font-bold">{totalDebt.toFixed(0)} €</p>
           </Link>
@@ -118,7 +109,7 @@ export default async function TodayPage() {
           {debtorsCount > 0 && (
             <Link
               href="/debts"
-              className="text-base font-medium text-primary hover:underline shrink-0"
+              className="text-base font-medium text-primary hover:underline shrink-0 active:opacity-80 transition-opacity"
             >
               Il reste {debtorsCount} client{debtorsCount > 1 ? "s" : ""} à payer
             </Link>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Home, Plus, FileText, Wallet, Settings } from "lucide-react";
 import { useAddSheet } from "@/features/add/add-sheet-context";
@@ -14,7 +14,12 @@ const navItems = [
 
 export function DashboardNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const { openAdd } = useAddSheet();
+
+  const prefetchOnTouch = (href: string) => {
+    router.prefetch(href);
+  };
 
   return (
     <>
@@ -25,8 +30,9 @@ export function DashboardNav() {
       >
         <Link
           href="/today"
+          onTouchStart={() => prefetchOnTouch("/today")}
           className={cn(
-            "flex min-h-[48px] min-w-[48px] flex-col items-center justify-center gap-0.5 px-4 py-2 text-xs font-medium transition-colors",
+            "flex min-h-[48px] min-w-[48px] flex-col items-center justify-center gap-0.5 px-4 py-2 text-xs font-medium transition-all active:scale-95",
             pathname === "/today" ? "text-primary" : "text-muted-foreground"
           )}
         >
@@ -45,15 +51,16 @@ export function DashboardNav() {
           <Plus className="h-7 w-7" strokeWidth={2.5} />
         </button>
 
-        {navItems.slice(1).map((item) => {
+        {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
             <Link
               key={item.href}
               href={item.href}
+              onTouchStart={() => prefetchOnTouch(item.href)}
               className={cn(
-                "flex min-h-[48px] min-w-[48px] flex-col items-center justify-center gap-0.5 px-4 py-2 text-xs font-medium transition-colors",
+                "flex min-h-[48px] min-w-[48px] flex-col items-center justify-center gap-0.5 px-4 py-2 text-xs font-medium transition-all active:scale-95",
                 isActive ? "text-primary" : "text-muted-foreground"
               )}
             >

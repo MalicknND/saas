@@ -92,6 +92,10 @@
     -webkit-overflow-scrolling: touch;
     -webkit-tap-highlight-color: transparent;
   }
+  /* Réponse tactile immédiate sur mobile (réduit latence 300ms) */
+  a, button {
+    touch-action: manipulation;
+  }
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-nunito), system-ui, sans-serif;

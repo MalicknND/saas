@@ -2,6 +2,7 @@
  * Workspace service - resolves current workspace for the authenticated user.
  * All other services depend on this for workspace_id.
  */
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { workspaceRepository } from "@/repositories/workspace.repository";
 
@@ -23,14 +24,17 @@ export async function getCurrentWorkspace() {
   return workspaces[0] ?? null;
 }
 
-export async function requireWorkspace(): Promise<{ supabase: Awaited<ReturnType<typeof createClient>>; workspaceId: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error("Non authentifié");
+/** Cached per request — évite 3x auth + workspace lookup sur Today */
+export const requireWorkspace = cache(
+  async (): Promise<{ supabase: Awaited<ReturnType<typeof createClient>>; workspaceId: string }> => {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Non authentifié");
 
-  const ids = await workspaceRepository.getUserWorkspaceIds(supabase, user.id);
-  const workspaceId = ids[0];
-  if (!workspaceId) throw new Error("Aucun espace de travail. Créez-en un.");
+    const ids = await workspaceRepository.getUserWorkspaceIds(supabase, user.id);
+    const workspaceId = ids[0];
+    if (!workspaceId) throw new Error("Aucun espace de travail. Créez-en un.");
 
-  return { supabase, workspaceId };
-}
+    return { supabase, workspaceId };
+  }
+);
