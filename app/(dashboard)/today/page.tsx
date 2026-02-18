@@ -21,17 +21,22 @@ export default async function TodayPage() {
   let summary: Awaited<ReturnType<typeof getDailySummary>> = { income: 0, expenses: 0, profit: 0 };
   let orders: Awaited<ReturnType<typeof listOrders>> = [];
   let totalDebt = 0;
+  let debtorsCount = 0;
   let error: string | null = null;
 
   try {
-    const [summaryRes, ordersRes, debtsRes] = await Promise.all([
+    const [summaryRes, ordersRes, debtsData] = await Promise.all([
       getDailySummary(today),
       listOrders({ deliveryDate: today }),
-      listCustomersWithDebt().then((d) => d.reduce((s, x) => s + x.debt, 0)),
+      listCustomersWithDebt().then((d) => ({
+        total: d.reduce((s, x) => s + x.debt, 0),
+        count: d.length,
+      })),
     ]);
     summary = summaryRes;
     orders = ordersRes;
-    totalDebt = debtsRes;
+    totalDebt = debtsData.total;
+    debtorsCount = debtsData.count;
   } catch (e) {
     error = e instanceof Error ? e.message : "Erreur";
   }
@@ -75,7 +80,7 @@ export default async function TodayPage() {
         <p className="text-sm uppercase tracking-wider opacity-90">Aujourd&apos;hui</p>
         <h1 className="text-2xl font-bold mt-1 capitalize">{dateFormatted}</h1>
 
-        {/* 4 cartes Reçu | Dépensé | Bénéfice | À recevoir */}
+        {/* 4 cartes Reçu | Dépensé | Solde du jour | À recevoir */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
           <div className="rounded-xl bg-white/20 p-4 text-center">
             <p className="text-xs opacity-90">Reçu</p>
@@ -90,7 +95,7 @@ export default async function TodayPage() {
               summary.profit >= 0 ? "bg-white/20" : "bg-[hsl(var(--loss))]"
             }`}
           >
-            <p className="text-xs opacity-90">Bénéfice</p>
+            <p className="text-xs opacity-90">Solde du jour</p>
             <p className="text-lg font-bold">
               {summary.profit >= 0 ? "+" : ""}{summary.profit.toFixed(0)} €
             </p>
@@ -103,8 +108,25 @@ export default async function TodayPage() {
       </header>
 
       <div className="p-4 space-y-4">
+        {/* Infos passives : compréhension en 1 seconde */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+          <p className="text-base font-medium text-foreground">
+            {orders.length === 0
+              ? "Aucune commande aujourd'hui"
+              : `${orders.length} commande${orders.length > 1 ? "s" : ""} à préparer aujourd'hui`}
+          </p>
+          {debtorsCount > 0 && (
+            <Link
+              href="/debts"
+              className="text-base font-medium text-primary hover:underline shrink-0"
+            >
+              Il reste {debtorsCount} client{debtorsCount > 1 ? "s" : ""} à payer
+            </Link>
+          )}
+        </div>
+
         {/* Liste commandes du jour */}
-        <h2 className="text-lg font-semibold pt-2">Commandes du jour</h2>
+        <h2 className="text-lg font-semibold">Commandes du jour</h2>
 
         {orders.length === 0 ? (
           <Card className="rounded-2xl">

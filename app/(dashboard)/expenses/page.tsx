@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { listExpenses } from "@/services/expense.service";
 import { expenseCategoryLabels } from "@/features/expenses/utils";
 import { AddExpenseButton } from "@/features/expenses/add-expense-button";

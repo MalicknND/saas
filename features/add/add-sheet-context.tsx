@@ -16,6 +16,8 @@ const AddSheetContext = createContext<AddSheetContextValue | null>(null);
 export function AddSheetProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [initialMode, setInitialMode] = useState<AddMode>("choice");
+  // TODO: lorsque mode="choice", prévoir "dernière action utilisée en premier"
+  // (localStorage ou pref pour order/expense selon historique)
 
   const openAdd = useCallback((mode?: "order" | "expense") => {
     setInitialMode(mode ?? "choice");
