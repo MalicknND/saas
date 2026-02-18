@@ -28,8 +28,8 @@ export default async function ExpensesPage() {
   if (error) {
     const needsSetup = error.toLowerCase().includes("espace de travail");
     return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Dépenses</h1>
+      <div className="p-4 space-y-6">
+        <h1 className="text-xl font-bold">Dépenses</h1>
         <Card>
           <CardContent className="pt-6 space-y-4">
             <p className="text-muted-foreground">{error}</p>
@@ -45,11 +45,11 @@ export default async function ExpensesPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Dépenses</h1>
+    <div className="p-4 space-y-6">
+      <h1 className="text-xl sm:text-2xl font-bold">Dépenses</h1>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-1">
+        <Card className="lg:col-span-1 rounded-2xl">
           <CardHeader>
             <CardTitle>Nouvelle dépense</CardTitle>
           </CardHeader>
@@ -58,7 +58,7 @@ export default async function ExpensesPage() {
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 rounded-2xl overflow-hidden">
           <CardHeader>
             <CardTitle>Liste des dépenses</CardTitle>
           </CardHeader>
@@ -66,34 +66,60 @@ export default async function ExpensesPage() {
             {expenses.length === 0 ? (
               <p className="text-sm text-muted-foreground">Aucune dépense</p>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Montant</TableHead>
-                    <TableHead>Catégorie</TableHead>
-                    <TableHead>Note</TableHead>
-                    <TableHead className="w-20"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
+              <>
+                {/* Mobile : cartes empilées */}
+                <div className="space-y-3 md:hidden">
                   {expenses.map((e) => (
-                    <TableRow key={e.id}>
-                      <TableCell>{e.date}</TableCell>
-                      <TableCell className="font-medium">{e.amount} €</TableCell>
-                      <TableCell>
-                        <Badge variant="secondary">{expenseCategoryLabels[e.category]}</Badge>
-                      </TableCell>
-                      <TableCell className="max-w-[200px] truncate text-muted-foreground">
-                        {e.note ?? "—"}
-                      </TableCell>
-                      <TableCell>
-                        <ExpenseActions expenseId={e.id} />
-                      </TableCell>
-                    </TableRow>
+                    <div
+                      key={e.id}
+                      className="rounded-xl border p-4 flex justify-between items-start gap-3"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="font-bold text-lg">{e.amount} €</p>
+                        <Badge variant="secondary" className="mt-1 text-xs">
+                          {expenseCategoryLabels[e.category]}
+                        </Badge>
+                        <p className="text-sm text-muted-foreground mt-1">{e.date}</p>
+                        {e.note && (
+                          <p className="text-sm text-muted-foreground truncate mt-0.5">{e.note}</p>
+                        )}
+                      </div>
+                      <ExpenseActions expenseId={e.id} />
+                    </div>
                   ))}
-                </TableBody>
-              </Table>
+                </div>
+                {/* Desktop : tableau */}
+                <div className="hidden md:block overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Montant</TableHead>
+                        <TableHead>Catégorie</TableHead>
+                        <TableHead>Note</TableHead>
+                        <TableHead className="w-20"></TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {expenses.map((e) => (
+                        <TableRow key={e.id}>
+                          <TableCell>{e.date}</TableCell>
+                          <TableCell className="font-medium">{e.amount} €</TableCell>
+                          <TableCell>
+                            <Badge variant="secondary">{expenseCategoryLabels[e.category]}</Badge>
+                          </TableCell>
+                          <TableCell className="max-w-[200px] truncate text-muted-foreground">
+                            {e.note ?? "—"}
+                          </TableCell>
+                          <TableCell>
+                            <ExpenseActions expenseId={e.id} />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </>
             )}
           </CardContent>
         </Card>

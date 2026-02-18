@@ -24,8 +24,8 @@ export default async function DebtsPage() {
   if (error) {
     const needsSetup = error.toLowerCase().includes("espace de travail");
     return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Dettes clients</h1>
+      <div className="p-4 space-y-6">
+        <h1 className="text-xl font-bold">Dettes clients</h1>
         <Card>
           <CardContent className="pt-6 space-y-4">
             <p className="text-muted-foreground">{error}</p>
@@ -43,10 +43,10 @@ export default async function DebtsPage() {
   const totalDebt = debts.reduce((s, d) => s + d.debt, 0);
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Dettes clients</h1>
+    <div className="p-4 space-y-6">
+      <h1 className="text-xl sm:text-2xl font-bold">Dettes clients</h1>
 
-      <Card>
+      <Card className="rounded-2xl overflow-hidden">
         <CardHeader>
           <CardTitle>Récapitulatif</CardTitle>
           <p className="text-2xl font-bold">{totalDebt.toFixed(2)} € à recouvrer</p>
