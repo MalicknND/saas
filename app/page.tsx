@@ -18,7 +18,7 @@ export default async function HomePage() {
   if (ids.length === 0) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-6">
-        <h1 className="text-2xl font-bold">Food Tracker</h1>
+        <h1 className="text-2xl font-bold">Mignardise</h1>
         <p className="mt-2 text-muted-foreground text-center">Créez un espace pour commencer</p>
         <a
           href="/setup"

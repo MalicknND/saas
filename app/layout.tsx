@@ -9,14 +9,14 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Food Tracker - Suivi commandes et dépenses",
+  title: "Mignardise - Suivi commandes et dépenses",
   description: "Outil de suivi pour vendeurs de cuisine maison",
   manifest: "/manifest.json",
   icons: { icon: "/icon-192.png", apple: "/icon-192.png" },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Food Tracker",
+    title: "Mignardise",
   },
 };
 

@@ -1,4 +1,4 @@
-# Food Tracker
+# Mignardise
 
 SaaS opérationnel pour vendeurs de cuisine maison : suivi des commandes, dépenses, profit quotidien et dettes clients.
 

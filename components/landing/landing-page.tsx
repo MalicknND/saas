@@ -53,7 +53,7 @@ export function LandingPage() {
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
               <Zap className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="font-bold text-lg text-slate-900">Food Tracker</span>
+            <span className="font-bold text-lg text-slate-900">Mignardise</span>
           </div>
           <Link
             href="/login"
@@ -150,7 +150,7 @@ export function LandingPage() {
       {/* Footer minimal */}
       <footer className="py-8 px-6 lg:px-8 border-t border-slate-200 bg-white">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-sm text-slate-500">Food Tracker</span>
+          <span className="text-sm text-slate-500">Mignardise</span>
         </div>
       </footer>
     </div>

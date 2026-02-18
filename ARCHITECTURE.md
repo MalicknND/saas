@@ -1,4 +1,4 @@
-# Food Tracker - Architecture & Technical Debt Prevention
+# Mignardise - Architecture & Technical Debt Prevention
 
 ## Overview
 

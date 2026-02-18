@@ -1,6 +1,6 @@
 {
-  "name": "Food Tracker",
-  "short_name": "Food Tracker",
+  "name": "Mignardise",
+  "short_name": "Mignardise",
   "description": "Tableau de cash quotidien pour vendeurs de cuisine maison",
   "start_url": "/",
   "display": "standalone",

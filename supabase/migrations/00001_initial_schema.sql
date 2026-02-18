@@ -1,5 +1,5 @@
 -- =============================================================================
--- Food Tracker SaaS - Initial Schema
+-- Mignardise SaaS - Initial Schema
 -- Multi-tenant: all tables include workspace_id, RLS enforces access
 -- =============================================================================
 
