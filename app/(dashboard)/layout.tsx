@@ -1,4 +1,5 @@
-import { BottomNav } from "@/components/layout/bottom-nav";
+import { DashboardNav } from "@/components/layout/dashboard-nav";
+import { AddSheetProvider } from "@/features/add/add-sheet-context";
 import { Toaster } from "@/components/ui/sonner";
 
 export default function DashboardLayout({
@@ -7,12 +8,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen min-h-[100dvh] flex-col bg-background">
-      <main className="flex-1 overflow-auto pb-24">
-        {children}
-      </main>
-      <BottomNav />
-      <Toaster />
-    </div>
+    <AddSheetProvider>
+      <div className="flex min-h-screen min-h-[100dvh] flex-col bg-background">
+        <main className="flex-1 overflow-auto pb-24">
+          {children}
+        </main>
+        <DashboardNav />
+        <Toaster />
+      </div>
+    </AddSheetProvider>
   );
 }

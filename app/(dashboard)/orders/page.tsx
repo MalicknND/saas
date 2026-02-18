@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listOrders } from "@/services/order.service";
+import { AddOrderButtonNav } from "@/features/orders/add-order-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -57,19 +58,14 @@ export default async function OrdersPage() {
     <div className="p-4 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h1 className="text-xl sm:text-2xl font-bold">Commandes</h1>
-        <Button asChild className="w-full sm:w-auto">
-          <Link href="/add-order">Nouvelle commande</Link>
-        </Button>
+        <AddOrderButtonNav />
       </div>
 
       <Card className="rounded-2xl overflow-hidden">
         <CardContent className="pt-6">
           {orders.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              Aucune commande.{" "}
-              <Link href="/add-order" className="text-primary underline">
-                Créer une commande
-              </Link>
+              Aucune commande. Utilisez le bouton + pour en créer une.
             </p>
           ) : (
             <>

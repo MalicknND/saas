@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { createOrder } from "@/actions/orders";
@@ -31,14 +32,19 @@ function SubmitButton() {
 
 interface OrderFormFullProps {
   customers: Customer[];
+  onSuccess?: () => void;
 }
 
-export function OrderFormFull({ customers }: OrderFormFullProps) {
+export function OrderFormFull({ customers, onSuccess }: OrderFormFullProps) {
   const [state, formAction] = useActionState(async (_: unknown, formData: FormData) => {
     return await createOrder(formData);
   }, null);
 
   const today = new Date().toISOString().slice(0, 10);
+
+  useEffect(() => {
+    if (state?.success && onSuccess) onSuccess();
+  }, [state?.success, onSuccess]);
 
   return (
     <form action={formAction} className="space-y-6">

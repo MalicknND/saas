@@ -5,6 +5,15 @@ import { customerSchema } from "@/validators/customer";
 import * as customerService from "@/services/customer.service";
 import * as debtService from "@/services/debt.service";
 import { getActionErrorMessage } from "@/lib/action-error";
+import type { Customer } from "@/types/database";
+
+export async function listCustomersForForm(): Promise<Customer[]> {
+  try {
+    return await customerService.listCustomers();
+  } catch {
+    return [];
+  }
+}
 
 export async function createCustomer(formData: FormData) {
   const parsed = customerSchema.safeParse({
@@ -20,6 +29,8 @@ export async function createCustomer(formData: FormData) {
   try {
     await customerService.createCustomer(parsed.data);
     revalidatePath("/customers");
+    revalidatePath("/debts");
+    revalidatePath("/today");
     revalidatePath("/dashboard");
     return { success: true };
   } catch (e) {
@@ -41,6 +52,7 @@ export async function updateCustomer(id: string, formData: FormData) {
   try {
     await customerService.updateCustomer(id, parsed.data);
     revalidatePath("/customers");
+    revalidatePath("/debts");
     revalidatePath(`/customers/${id}`);
     return { success: true };
   } catch (e) {

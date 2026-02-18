@@ -26,7 +26,7 @@ export async function createOrder(formData: FormData) {
     await orderService.createOrder(parsed.data);
     revalidatePath("/");
     revalidatePath("/today");
-    revalidatePath("/add-order");
+    revalidatePath("/orders");
     return { success: true };
   } catch (e) {
     return { error: { _form: [getActionErrorMessage(e)] } };

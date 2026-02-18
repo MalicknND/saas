@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { getDailySummary } from "@/services/summary.service";
 import { listOrders } from "@/services/order.service";
+import { listCustomersWithDebt } from "@/services/debt.service";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { AddOrderButton } from "@/features/add/add-order-button";
 
 function formatDateFr(dateStr: string) {
   const d = new Date(dateStr);
@@ -19,13 +20,18 @@ export default async function TodayPage() {
 
   let summary: Awaited<ReturnType<typeof getDailySummary>> = { income: 0, expenses: 0, profit: 0 };
   let orders: Awaited<ReturnType<typeof listOrders>> = [];
+  let totalDebt = 0;
   let error: string | null = null;
 
   try {
-    [summary, orders] = await Promise.all([
+    const [summaryRes, ordersRes, debtsRes] = await Promise.all([
       getDailySummary(today),
       listOrders({ deliveryDate: today }),
+      listCustomersWithDebt().then((d) => d.reduce((s, x) => s + x.debt, 0)),
     ]);
+    summary = summaryRes;
+    orders = ordersRes;
+    totalDebt = debtsRes;
   } catch (e) {
     error = e instanceof Error ? e.message : "Erreur";
   }
@@ -69,16 +75,16 @@ export default async function TodayPage() {
         <p className="text-sm uppercase tracking-wider opacity-90">Aujourd&apos;hui</p>
         <h1 className="text-2xl font-bold mt-1 capitalize">{dateFormatted}</h1>
 
-        {/* 3 cartes Reçu | Dépensé | Bénéfice intégrées */}
-        <div className="grid grid-cols-3 gap-3 mt-6">
+        {/* 4 cartes Reçu | Dépensé | Bénéfice | À recevoir */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
           <div className="rounded-xl bg-white/20 p-4 text-center">
             <p className="text-xs opacity-90">Reçu</p>
             <p className="text-lg font-bold">{summary.income.toFixed(0)} €</p>
           </div>
-          <div className="rounded-xl bg-white/20 p-4 text-center">
+          <Link href="/expenses" className="rounded-xl bg-white/20 p-4 text-center block active:opacity-90">
             <p className="text-xs opacity-90">Dépensé</p>
             <p className="text-lg font-bold">{summary.expenses.toFixed(0)} €</p>
-          </div>
+          </Link>
           <div
             className={`rounded-xl p-4 text-center ${
               summary.profit >= 0 ? "bg-white/20" : "bg-[hsl(var(--loss))]"
@@ -89,6 +95,10 @@ export default async function TodayPage() {
               {summary.profit >= 0 ? "+" : ""}{summary.profit.toFixed(0)} €
             </p>
           </div>
+          <Link href="/debts" className="rounded-xl bg-white/20 p-4 text-center block active:opacity-90">
+            <p className="text-xs opacity-90">À recevoir</p>
+            <p className="text-lg font-bold">{totalDebt.toFixed(0)} €</p>
+          </Link>
         </div>
       </header>
 
@@ -101,12 +111,7 @@ export default async function TodayPage() {
             <CardContent className="py-12 text-center">
               <p className="text-5xl mb-4">📋</p>
               <p className="text-muted-foreground mb-4">Aucune commande aujourd&apos;hui</p>
-              <Button asChild size="lg" className="min-h-[48px]">
-                <Link href="/add-order">
-                  <Plus className="mr-2 h-5 w-5" />
-                  Ajouter une commande
-                </Link>
-              </Button>
+              <AddOrderButton />
             </CardContent>
           </Card>
         ) : (

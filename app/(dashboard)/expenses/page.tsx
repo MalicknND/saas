@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { listExpenses } from "@/services/expense.service";
-import { ExpenseForm } from "@/features/expenses/expense-form";
 import { expenseCategoryLabels } from "@/features/expenses/utils";
+import { AddExpenseButton } from "@/features/expenses/add-expense-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -46,19 +45,12 @@ export default async function ExpensesPage() {
 
   return (
     <div className="p-4 space-y-6">
-      <h1 className="text-xl sm:text-2xl font-bold">Dépenses</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 className="text-xl sm:text-2xl font-bold">Dépenses</h1>
+        <AddExpenseButton />
+      </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-1 rounded-2xl">
-          <CardHeader>
-            <CardTitle>Nouvelle dépense</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ExpenseForm />
-          </CardContent>
-        </Card>
-
-        <Card className="lg:col-span-2 rounded-2xl overflow-hidden">
+      <Card className="rounded-2xl overflow-hidden">
           <CardHeader>
             <CardTitle>Liste des dépenses</CardTitle>
           </CardHeader>
@@ -122,8 +114,7 @@ export default async function ExpensesPage() {
               </>
             )}
           </CardContent>
-        </Card>
-      </div>
+      </Card>
     </div>
   );
 }

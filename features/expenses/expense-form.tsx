@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { createExpense } from "@/actions/expenses";
@@ -18,13 +19,21 @@ function SubmitButton() {
   );
 }
 
-export function ExpenseForm() {
+interface ExpenseFormProps {
+  onSuccess?: () => void;
+}
+
+export function ExpenseForm({ onSuccess }: ExpenseFormProps = {}) {
   const [state, formAction] = useActionState(async (_prev: unknown, formData: FormData) => {
     const result = await createExpense(formData);
     return result;
   }, null);
 
   const today = new Date().toISOString().slice(0, 10);
+
+  useEffect(() => {
+    if (state?.success && onSuccess) onSuccess();
+  }, [state?.success, onSuccess]);
 
   return (
     <form action={formAction} className="space-y-4">
