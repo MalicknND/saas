@@ -60,44 +60,39 @@ export default async function TodayPage() {
     delivered: "Livré",
   };
 
+  const dateFormatted = formatDateFr(today);
+
   return (
     <div className="min-h-full">
-      {/* Header arrondi */}
-      <header className="rounded-b-3xl bg-primary text-primary-foreground px-6 py-8">
-        <h1 className="text-2xl font-bold capitalize">
-          {formatDateFr(today)}
-        </h1>
+      {/* Bloc principal : header orange avec les 3 cartes intégrées */}
+      <header className="rounded-b-3xl bg-primary text-primary-foreground px-6 pt-6 pb-8">
+        <p className="text-sm uppercase tracking-wider opacity-90">Aujourd&apos;hui</p>
+        <h1 className="text-2xl font-bold mt-1 capitalize">{dateFormatted}</h1>
+
+        {/* 3 cartes Reçu | Dépensé | Bénéfice intégrées */}
+        <div className="grid grid-cols-3 gap-3 mt-6">
+          <div className="rounded-xl bg-white/20 p-4 text-center">
+            <p className="text-xs opacity-90">Reçu</p>
+            <p className="text-lg font-bold">{summary.income.toFixed(0)} €</p>
+          </div>
+          <div className="rounded-xl bg-white/20 p-4 text-center">
+            <p className="text-xs opacity-90">Dépensé</p>
+            <p className="text-lg font-bold">{summary.expenses.toFixed(0)} €</p>
+          </div>
+          <div
+            className={`rounded-xl p-4 text-center ${
+              summary.profit >= 0 ? "bg-white/20" : "bg-[hsl(var(--loss))]"
+            }`}
+          >
+            <p className="text-xs opacity-90">Bénéfice</p>
+            <p className="text-lg font-bold">
+              {summary.profit >= 0 ? "+" : ""}{summary.profit.toFixed(0)} €
+            </p>
+          </div>
+        </div>
       </header>
 
-      <div className="p-4 -mt-4 space-y-4">
-        {/* 3 cartes Reçu | Dépensé | Bénéfice */}
-        <div className="grid grid-cols-3 gap-3">
-          <Card className="rounded-2xl">
-            <CardContent className="p-4 text-center">
-              <p className="text-xs text-muted-foreground">Reçu</p>
-              <p className="text-lg font-bold">{summary.income.toFixed(0)} €</p>
-            </CardContent>
-          </Card>
-          <Card className="rounded-2xl">
-            <CardContent className="p-4 text-center">
-              <p className="text-xs text-muted-foreground">Dépensé</p>
-              <p className="text-lg font-bold">{summary.expenses.toFixed(0)} €</p>
-            </CardContent>
-          </Card>
-          <Card className="rounded-2xl">
-            <CardContent className="p-4 text-center">
-              <p className="text-xs text-muted-foreground">Bénéfice</p>
-              <p
-                className={`text-lg font-bold ${
-                  summary.profit >= 0 ? "text-[hsl(var(--profit))]" : "text-[hsl(var(--loss))]"
-                }`}
-              >
-                {summary.profit >= 0 ? "+" : ""}{summary.profit.toFixed(0)} €
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
+      <div className="p-4 space-y-4">
         {/* Liste commandes du jour */}
         <h2 className="text-lg font-semibold pt-2">Commandes du jour</h2>
 
