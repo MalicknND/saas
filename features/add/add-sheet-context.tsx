@@ -1,7 +1,7 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { createContext, useContext, useState, useCallback } from "react";
-import { AddSheet } from "./add-sheet";
 
 type AddMode = "choice" | "order" | "expense";
 
@@ -12,6 +12,12 @@ interface AddSheetContextValue {
 }
 
 const AddSheetContext = createContext<AddSheetContextValue | null>(null);
+
+/** Lazy load — charge uniquement au premier clic sur + (pas au montage du layout) */
+const AddSheet = dynamic(
+  () => import("./add-sheet").then((m) => ({ default: m.AddSheet })),
+  { ssr: false }
+);
 
 export function AddSheetProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -34,7 +40,9 @@ export function AddSheetProvider({ children }: { children: React.ReactNode }) {
   return (
     <AddSheetContext.Provider value={{ open, openAdd, closeAdd }}>
       {children}
-      <AddSheet open={open} onOpenChange={handleOpenChange} initialMode={initialMode} />
+      {open && (
+        <AddSheet open={open} onOpenChange={handleOpenChange} initialMode={initialMode} />
+      )}
     </AddSheetContext.Provider>
   );
 }

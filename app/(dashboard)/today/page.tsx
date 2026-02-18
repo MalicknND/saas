@@ -3,6 +3,7 @@ import { getTodayDashboard } from "@/services/dashboard.service";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AddOrderButton } from "@/features/add/add-order-button";
+import { OrderCardLink } from "@/components/order-card-link";
 
 function formatDateFr(dateStr: string) {
   const d = new Date(dateStr);
@@ -77,10 +78,10 @@ export default async function TodayPage() {
             <p className="text-xs opacity-90">Reçu</p>
             <p className="text-lg font-bold">{summary.income.toFixed(0)} €</p>
           </div>
-          <Link href="/expenses" className="rounded-xl bg-white/20 p-4 text-center block active:scale-[0.98] transition-transform">
+          <a href="/expenses" className="rounded-xl bg-white/20 p-4 text-center block">
             <p className="text-xs opacity-90">Dépensé</p>
             <p className="text-lg font-bold">{summary.expenses.toFixed(0)} €</p>
-          </Link>
+          </a>
           <div
             className={`rounded-xl p-4 text-center ${
               summary.profit >= 0 ? "bg-white/20" : "bg-[hsl(var(--loss))]"
@@ -91,10 +92,10 @@ export default async function TodayPage() {
               {summary.profit >= 0 ? "+" : ""}{summary.profit.toFixed(0)} €
             </p>
           </div>
-          <Link href="/debts" className="rounded-xl bg-white/20 p-4 text-center block active:scale-[0.98] transition-transform">
+          <a href="/debts" className="rounded-xl bg-white/20 p-4 text-center block">
             <p className="text-xs opacity-90">À recevoir</p>
             <p className="text-lg font-bold">{totalDebt.toFixed(0)} €</p>
-          </Link>
+          </a>
         </div>
       </header>
 
@@ -107,12 +108,12 @@ export default async function TodayPage() {
               : `${orders.length} commande${orders.length > 1 ? "s" : ""} à préparer aujourd'hui`}
           </p>
           {debtorsCount > 0 && (
-            <Link
+            <a
               href="/debts"
-              className="text-base font-medium text-primary hover:underline shrink-0 active:opacity-80 transition-opacity"
+              className="text-base font-medium text-primary hover:underline shrink-0"
             >
               Il reste {debtorsCount} client{debtorsCount > 1 ? "s" : ""} à payer
-            </Link>
+            </a>
           )}
         </div>
 
@@ -130,35 +131,34 @@ export default async function TodayPage() {
         ) : (
           <div className="space-y-3">
             {orders.map((o) => (
-              <Link key={o.id} href={`/order/${o.id}`} className="block">
-                <Card className="rounded-2xl p-4 active:scale-[0.98] transition-transform">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="font-semibold">{o.customer?.name ?? "—"}</p>
-                      <p className="text-sm text-muted-foreground truncate max-w-[200px]">
-                        {o.items}
-                      </p>
-                      <div className="flex gap-2 mt-2">
-                        <span
-                          className={`text-xs px-2 py-0.5 rounded-full ${
-                            o.payment_status === "paid"
-                              ? "bg-[hsl(var(--profit))]/20 text-[hsl(var(--profit))]"
-                              : o.payment_status === "deposit"
-                                ? "bg-[hsl(var(--warning))]/20 text-[hsl(var(--warning))]"
-                                : "bg-destructive/20 text-destructive"
-                          }`}
-                        >
-                          {paymentLabels[o.payment_status]}
-                        </span>
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-                          {statusLabels[o.status]}
-                        </span>
-                      </div>
+              <div key={o.id} className="relative rounded-2xl border bg-card p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="font-semibold">{o.customer?.name ?? "—"}</p>
+                    <p className="text-sm text-muted-foreground truncate max-w-[200px]">
+                      {o.items}
+                    </p>
+                    <div className="flex gap-2 mt-2">
+                      <span
+                        className={`text-xs px-2 py-0.5 rounded-full ${
+                          o.payment_status === "paid"
+                            ? "bg-[hsl(var(--profit))]/20 text-[hsl(var(--profit))]"
+                            : o.payment_status === "deposit"
+                              ? "bg-[hsl(var(--warning))]/20 text-[hsl(var(--warning))]"
+                              : "bg-destructive/20 text-destructive"
+                        }`}
+                      >
+                        {paymentLabels[o.payment_status]}
+                      </span>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                        {statusLabels[o.status]}
+                      </span>
                     </div>
-                    <p className="font-bold text-lg">{o.total_price} €</p>
                   </div>
-                </Card>
-              </Link>
+                  <p className="font-bold text-lg">{o.total_price} €</p>
+                </div>
+                <OrderCardLink orderId={o.id} />
+              </div>
             ))}
           </div>
         )}

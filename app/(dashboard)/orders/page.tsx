@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { listOrders } from "@/services/order.service";
 import { AddOrderButtonNav } from "@/features/orders/add-order-button";
+import { OrderCardLink } from "@/components/order-card-link";
+import { OrderRowLink } from "@/components/order-row-link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -69,39 +71,38 @@ export default async function OrdersPage() {
             </p>
           ) : (
             <>
-              {/* Mobile : cartes empilées */}
+              {/* Mobile : cartes empilées (HTML statique + petit OrderCardLink client) */}
               <div className="space-y-3 md:hidden">
                 {orders.map((o) => (
-                  <Link key={o.id} href={`/order/${o.id}`} className="block">
-                    <div className="rounded-xl border p-4 active:scale-[0.98] transition-transform">
-                      <div className="flex justify-between items-start gap-3">
-                        <div className="min-w-0 flex-1">
-                          <p className="font-semibold truncate">{o.customer?.name ?? "—"}</p>
-                          <p className="text-sm text-muted-foreground truncate mt-0.5">{o.items}</p>
-                          <p className="text-xs text-muted-foreground mt-1">{o.delivery_date}</p>
-                          <div className="flex gap-2 mt-2 flex-wrap">
-                            <Badge variant="outline" className="text-xs">{statusLabels[o.status]}</Badge>
-                            <Badge
-                              variant={
-                                o.payment_status === "paid"
-                                  ? "default"
-                                  : o.payment_status === "deposit"
-                                    ? "secondary"
-                                    : "destructive"
-                              }
-                              className="text-xs"
-                            >
-                              {paymentLabels[o.payment_status]}
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="shrink-0 text-right">
-                          <p className="font-bold text-lg">{o.total_price} €</p>
-                          <span className="text-xs text-primary font-medium">Détails</span>
+                  <div key={o.id} className="relative rounded-xl border p-4">
+                    <div className="flex justify-between items-start gap-3">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold truncate">{o.customer?.name ?? "—"}</p>
+                        <p className="text-sm text-muted-foreground truncate mt-0.5">{o.items}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{o.delivery_date}</p>
+                        <div className="flex gap-2 mt-2 flex-wrap">
+                          <Badge variant="outline" className="text-xs">{statusLabels[o.status]}</Badge>
+                          <Badge
+                            variant={
+                              o.payment_status === "paid"
+                                ? "default"
+                                : o.payment_status === "deposit"
+                                  ? "secondary"
+                                  : "destructive"
+                            }
+                            className="text-xs"
+                          >
+                            {paymentLabels[o.payment_status]}
+                          </Badge>
                         </div>
                       </div>
+                      <div className="shrink-0 text-right">
+                        <p className="font-bold text-lg">{o.total_price} €</p>
+                        <span className="text-xs text-primary font-medium">Détails</span>
+                      </div>
                     </div>
-                  </Link>
+                    <OrderCardLink orderId={o.id} />
+                  </div>
                 ))}
               </div>
 
@@ -147,9 +148,7 @@ export default async function OrdersPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Button variant="outline" size="sm" asChild>
-                            <Link href={`/order/${o.id}`}>Détails</Link>
-                          </Button>
+                          <OrderRowLink orderId={o.id} />
                         </TableCell>
                       </TableRow>
                     ))}
