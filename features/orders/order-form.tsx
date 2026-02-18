@@ -60,7 +60,7 @@ export function OrderForm({ customers, defaultCustomerId }: OrderFormProps) {
             </option>
           ))}
         </select>
-        {state?.error?.customer_id && (
+        {state?.error && "customer_id" in state.error && state.error.customer_id?.[0] && (
           <p className="text-sm text-destructive">{state.error.customer_id[0]}</p>
         )}
       </div>
@@ -73,7 +73,7 @@ export function OrderForm({ customers, defaultCustomerId }: OrderFormProps) {
           placeholder="Ex: 3 tartes citron, 2 quiches"
           required
         />
-        {state?.error?.items && (
+        {state?.error && "items" in state.error && state.error.items?.[0] && (
           <p className="text-sm text-destructive">{state.error.items[0]}</p>
         )}
       </div>
@@ -88,7 +88,7 @@ export function OrderForm({ customers, defaultCustomerId }: OrderFormProps) {
           min="0"
           required
         />
-        {state?.error?.total_price && (
+        {state?.error && "total_price" in state.error && state.error.total_price?.[0] && (
           <p className="text-sm text-destructive">{state.error.total_price[0]}</p>
         )}
       </div>
@@ -96,7 +96,7 @@ export function OrderForm({ customers, defaultCustomerId }: OrderFormProps) {
       <div className="space-y-2">
         <Label htmlFor="delivery_date">Date de livraison</Label>
         <Input id="delivery_date" name="delivery_date" type="date" defaultValue={today} required />
-        {state?.error?.delivery_date && (
+        {state?.error && "delivery_date" in state.error && state.error.delivery_date?.[0] && (
           <p className="text-sm text-destructive">{state.error.delivery_date[0]}</p>
         )}
       </div>

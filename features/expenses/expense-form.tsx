@@ -39,7 +39,7 @@ export function ExpenseForm() {
           placeholder="0,00"
           required
         />
-        {state?.error?.amount && (
+        {state?.error && "amount" in state.error && state.error.amount?.[0] && (
           <p className="text-sm text-destructive">{state.error.amount[0]}</p>
         )}
       </div>
@@ -59,7 +59,7 @@ export function ExpenseForm() {
             </option>
           ))}
         </select>
-        {state?.error?.category && (
+        {state?.error && "category" in state.error && state.error.category?.[0] && (
           <p className="text-sm text-destructive">{state.error.category[0]}</p>
         )}
       </div>
@@ -67,7 +67,7 @@ export function ExpenseForm() {
       <div className="space-y-2">
         <Label htmlFor="date">Date</Label>
         <Input id="date" name="date" type="date" defaultValue={today} required />
-        {state?.error?.date && (
+        {state?.error && "date" in state.error && state.error.date?.[0] && (
           <p className="text-sm text-destructive">{state.error.date[0]}</p>
         )}
       </div>

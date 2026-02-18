@@ -27,7 +27,7 @@ export function CustomerForm() {
       <div className="space-y-2">
         <Label htmlFor="name">Nom</Label>
         <Input id="name" name="name" placeholder="Jean Dupont" required />
-        {state?.error?.name && (
+        {state?.error && "name" in state.error && state.error.name?.[0] && (
           <p className="text-sm text-destructive">{state.error.name[0]}</p>
         )}
       </div>
