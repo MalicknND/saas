@@ -18,8 +18,8 @@ export default function CGUPage() {
           </h2>
           <p>
             Les présentes Conditions générales d&apos;utilisation (CGU) régissent
-            l&apos;accès et l&apos;utilisation du service Mignardise, accessible
-            à l&apos;adresse [url du site]. En créant un compte ou en utilisant le
+            l&apos;accès et l&apos;utilisation du service Mignardise. En créant un
+            compte ou en utilisant le
             service, vous acceptez sans réserve les présentes CGU.
           </p>
         </section>
@@ -79,10 +79,9 @@ export default function CGUPage() {
         <section>
           <h2 className="text-lg font-semibold text-slate-900">6. Prix</h2>
           <p>
-            [À définir selon votre modèle : gratuit, freemium, abonnement.
-            Exemple : Le service est actuellement proposé à titre gratuit. Des
-            modalités tarifaires pourront être introduites ultérieurement, avec
-            information préalable des utilisateurs.]
+            Le service est actuellement proposé à titre gratuit. Des modalités
+            tarifaires pourront être introduites ultérieurement, avec information
+            préalable des utilisateurs.
           </p>
         </section>
 
@@ -121,11 +120,18 @@ export default function CGUPage() {
 
         <section>
           <h2 className="text-lg font-semibold text-slate-900">10. Contact</h2>
-          <p>Pour toute question : [adresse email]</p>
+          <p>
+            Pour toute question :{" "}
+            <a href="mailto:msndiayedev@gmail.com" className="text-primary underline">
+              msndiayedev@gmail.com
+            </a>
+          </p>
         </section>
       </div>
 
-      <p className="mt-12 text-sm text-slate-500">Dernière mise à jour : [date]</p>
+      <p className="mt-12 text-sm text-slate-500">
+        Dernière mise à jour : 18 février 2025
+      </p>
     </article>
   );
 }

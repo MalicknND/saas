@@ -17,17 +17,15 @@ export default function MentionsLegalesPage() {
           <h2 className="text-lg font-semibold text-slate-900">1. Éditeur du site</h2>
           <p>
             Le site Mignardise est édité par :<br />
-            <strong>[Dénomination sociale ou nom du responsable]</strong>
+            <strong>Malick Siguy NDIAYE</strong>
             <br />
-            [Forme juridique : SARL, SAS, auto-entrepreneur, etc.]
+            Auto-entrepreneur (micro-entreprise)
             <br />
-            [Siège social : adresse complète]
+            8 RUE de l&apos;Aigle, 92250 La Garenne-Colombes, France
             <br />
-            [Capital social si applicable]
+            SIRET : 100 679 901 000 15
             <br />
-            [RCS ou répertoire des métiers si applicable]
-            <br />
-            [N° de TVA intracommunautaire si applicable]
+            TVA non applicable, article 293 B du CGI
           </p>
         </section>
 
@@ -35,7 +33,7 @@ export default function MentionsLegalesPage() {
           <h2 className="text-lg font-semibold text-slate-900">
             2. Directeur de la publication
           </h2>
-          <p>[Nom du directeur de la publication]</p>
+          <p>Malick Siguy NDIAYE</p>
         </section>
 
         <section>
@@ -76,7 +74,10 @@ export default function MentionsLegalesPage() {
           <h2 className="text-lg font-semibold text-slate-900">4. Contact</h2>
           <p>
             Pour toute question concernant le site Mignardise :<br />
-            Email : [adresse email de contact]
+            Email :{" "}
+            <a href="mailto:msndiayedev@gmail.com" className="text-primary underline">
+              msndiayedev@gmail.com
+            </a>
           </p>
         </section>
 
@@ -93,7 +94,9 @@ export default function MentionsLegalesPage() {
         </section>
       </div>
 
-      <p className="mt-12 text-sm text-slate-500">Dernière mise à jour : [date]</p>
+      <p className="mt-12 text-sm text-slate-500">
+        Dernière mise à jour : 18 février 2025
+      </p>
     </article>
   );
 }

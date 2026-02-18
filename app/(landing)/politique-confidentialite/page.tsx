@@ -21,11 +21,14 @@ export default function PolitiqueConfidentialitePage() {
           </h2>
           <p>
             Le responsable du traitement des données personnelles est :<br />
-            [Dénomination ou nom]
+            Malick Siguy NDIAYE
             <br />
-            [Adresse]
+            8 RUE de l&apos;Aigle, 92250 La Garenne-Colombes, France
             <br />
-            Email : [adresse email]
+            Email :{" "}
+            <a href="mailto:msndiayedev@gmail.com" className="text-primary underline">
+              msndiayedev@gmail.com
+            </a>
           </p>
         </section>
 
@@ -102,7 +105,11 @@ export default function PolitiqueConfidentialitePage() {
             </li>
           </ul>
           <p className="mt-4">
-            Pour exercer ces droits, contactez-nous à [adresse email]. Vous
+            Pour exercer ces droits, contactez-nous à{" "}
+            <a href="mailto:msndiayedev@gmail.com" className="text-primary underline">
+              msndiayedev@gmail.com
+            </a>
+            . Vous
             pouvez également introduire une réclamation auprès de la CNIL (
             <a
               href="https://www.cnil.fr"
@@ -150,7 +157,9 @@ export default function PolitiqueConfidentialitePage() {
         </section>
       </div>
 
-      <p className="mt-12 text-sm text-slate-500">Dernière mise à jour : [date]</p>
+      <p className="mt-12 text-sm text-slate-500">
+        Dernière mise à jour : 18 février 2025
+      </p>
     </article>
   );
 }
