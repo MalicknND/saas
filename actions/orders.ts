@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createOrderSchema, orderPaymentSchema, updateOrderSchema } from "@/validators/order.schema";
 import * as orderService from "@/services/order.service";
+import { getActionErrorMessage } from "@/lib/action-error";
 
 export async function createOrder(formData: FormData) {
   const parsed = createOrderSchema.safeParse({
@@ -21,11 +22,15 @@ export async function createOrder(formData: FormData) {
     return { error: parsed.error.flatten().fieldErrors };
   }
 
-  await orderService.createOrder(parsed.data);
-  revalidatePath("/");
-  revalidatePath("/today");
-  revalidatePath("/add-order");
-  return { success: true };
+  try {
+    await orderService.createOrder(parsed.data);
+    revalidatePath("/");
+    revalidatePath("/today");
+    revalidatePath("/add-order");
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }
 
 export async function updateOrder(id: string, formData: FormData) {
@@ -42,30 +47,42 @@ export async function updateOrder(id: string, formData: FormData) {
     return { error: parsed.error.flatten().fieldErrors };
   }
 
-  await orderService.updateOrder(id, parsed.data);
-  revalidatePath("/today");
-  revalidatePath("/orders");
-  revalidatePath(`/order/${id}`);
-  return { success: true };
+  try {
+    await orderService.updateOrder(id, parsed.data);
+    revalidatePath("/today");
+    revalidatePath("/orders");
+    revalidatePath(`/order/${id}`);
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }
 
 export async function deleteOrder(id: string) {
-  await orderService.deleteOrder(id);
-  revalidatePath("/today");
-  revalidatePath("/orders");
-  revalidatePath(`/order/${id}`);
-  return { success: true };
+  try {
+    await orderService.deleteOrder(id);
+    revalidatePath("/today");
+    revalidatePath("/orders");
+    revalidatePath(`/order/${id}`);
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }
 
 export async function updateOrderStatus(
   id: string,
   updates: { status?: "pending" | "preparing" | "delivered"; payment_status?: "unpaid" | "deposit" | "paid" }
 ) {
-  await orderService.updateOrder(id, updates);
-  revalidatePath("/today");
-  revalidatePath("/orders");
-  revalidatePath(`/order/${id}`);
-  return { success: true };
+  try {
+    await orderService.updateOrder(id, updates);
+    revalidatePath("/today");
+    revalidatePath("/orders");
+    revalidatePath(`/order/${id}`);
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }
 
 export async function addOrderPayment(formData: FormData) {
@@ -80,9 +97,13 @@ export async function addOrderPayment(formData: FormData) {
     return { error: parsed.error.flatten().fieldErrors };
   }
 
-  await orderService.addPayment(parsed.data);
-  revalidatePath("/today");
-  revalidatePath("/orders");
-  revalidatePath(`/order/${parsed.data.order_id}`);
-  return { success: true };
+  try {
+    await orderService.addPayment(parsed.data);
+    revalidatePath("/today");
+    revalidatePath("/orders");
+    revalidatePath(`/order/${parsed.data.order_id}`);
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }

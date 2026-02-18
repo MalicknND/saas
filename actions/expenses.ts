@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { expenseSchema } from "@/validators/expense";
 import * as expenseService from "@/services/expense.service";
+import { getActionErrorMessage } from "@/lib/action-error";
 
 export async function createExpense(formData: FormData) {
   const parsed = expenseSchema.safeParse({
@@ -16,10 +17,14 @@ export async function createExpense(formData: FormData) {
     return { error: parsed.error.flatten().fieldErrors };
   }
 
-  await expenseService.createExpense(parsed.data);
-  revalidatePath("/today");
-  revalidatePath("/expenses");
-  return { success: true };
+  try {
+    await expenseService.createExpense(parsed.data);
+    revalidatePath("/today");
+    revalidatePath("/expenses");
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }
 
 export async function updateExpense(id: string, formData: FormData) {
@@ -34,15 +39,23 @@ export async function updateExpense(id: string, formData: FormData) {
     return { error: parsed.error.flatten().fieldErrors };
   }
 
-  await expenseService.updateExpense(id, parsed.data);
-  revalidatePath("/expenses");
-  revalidatePath(`/expenses/${id}`);
-  return { success: true };
+  try {
+    await expenseService.updateExpense(id, parsed.data);
+    revalidatePath("/expenses");
+    revalidatePath(`/expenses/${id}`);
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }
 
 export async function deleteExpense(id: string) {
-  await expenseService.deleteExpense(id);
-  revalidatePath("/today");
-  revalidatePath("/expenses");
-  return { success: true };
+  try {
+    await expenseService.deleteExpense(id);
+    revalidatePath("/today");
+    revalidatePath("/expenses");
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }

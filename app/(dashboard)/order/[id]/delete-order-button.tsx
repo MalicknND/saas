@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { deleteOrder } from "@/actions/orders";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
@@ -18,8 +19,12 @@ export function DeleteOrderButton({ orderId }: DeleteOrderButtonProps) {
   const handleDelete = () => {
     if (!confirm("Supprimer cette commande ?")) return;
     startTransition(async () => {
-      await deleteOrder(orderId);
-      router.push("/today");
+      const result = await deleteOrder(orderId);
+      if (result?.error) {
+        toast.error(Object.values(result.error).flat().join(" "));
+      } else {
+        router.push("/today");
+      }
     });
   };
 

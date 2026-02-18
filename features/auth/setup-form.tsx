@@ -1,5 +1,6 @@
 "use client";
 
+import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { createWorkspaceFromForm } from "@/actions/workspace";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,10 @@ function SubmitButton() {
 }
 
 export function SetupForm() {
+  const [state, formAction] = useActionState(async (_: unknown, formData: FormData) => {
+    return await createWorkspaceFromForm(formData);
+  }, null);
+
   return (
     <Card>
       <CardHeader>
@@ -26,11 +31,14 @@ export function SetupForm() {
         </p>
       </CardHeader>
       <CardContent>
-        <form action={createWorkspaceFromForm} className="space-y-4">
+        <form action={formAction} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Nom</Label>
             <Input id="name" name="name" placeholder="Mon activité" required />
           </div>
+          {state?.error && (
+            <p className="text-sm text-destructive">{Object.values(state.error).flat().join(" ")}</p>
+          )}
           <SubmitButton />
         </form>
       </CardContent>

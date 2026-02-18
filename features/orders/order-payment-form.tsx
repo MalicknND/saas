@@ -29,7 +29,8 @@ export function OrderPaymentForm({ orderId }: OrderPaymentFormProps) {
   const today = new Date().toISOString().slice(0, 10);
 
   return (
-    <form action={formAction} className="flex flex-wrap gap-2 items-end">
+    <form action={formAction} className="space-y-2">
+      <div className="flex flex-wrap gap-2 items-end">
       <input type="hidden" name="order_id" value={orderId} />
       <div className="space-y-1">
         <Label htmlFor="amount" className="text-xs">Montant</Label>
@@ -40,6 +41,10 @@ export function OrderPaymentForm({ orderId }: OrderPaymentFormProps) {
         <Input id="paid_at" name="paid_at" type="date" defaultValue={today} className="w-36" required />
       </div>
       <SubmitButton />
+      </div>
+      {state?.error && (
+        <p className="text-sm text-destructive">{Object.values(state.error).flat().join(" ")}</p>
+      )}
     </form>
   );
 }

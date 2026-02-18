@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { customerSchema } from "@/validators/customer";
 import * as customerService from "@/services/customer.service";
 import * as debtService from "@/services/debt.service";
+import { getActionErrorMessage } from "@/lib/action-error";
 
 export async function createCustomer(formData: FormData) {
   const parsed = customerSchema.safeParse({
@@ -16,10 +17,14 @@ export async function createCustomer(formData: FormData) {
     return { error: parsed.error.flatten().fieldErrors };
   }
 
-  await customerService.createCustomer(parsed.data);
-  revalidatePath("/customers");
-  revalidatePath("/dashboard");
-  return { success: true };
+  try {
+    await customerService.createCustomer(parsed.data);
+    revalidatePath("/customers");
+    revalidatePath("/dashboard");
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }
 
 export async function updateCustomer(id: string, formData: FormData) {
@@ -33,22 +38,34 @@ export async function updateCustomer(id: string, formData: FormData) {
     return { error: parsed.error.flatten().fieldErrors };
   }
 
-  await customerService.updateCustomer(id, parsed.data);
-  revalidatePath("/customers");
-  revalidatePath(`/customers/${id}`);
-  return { success: true };
+  try {
+    await customerService.updateCustomer(id, parsed.data);
+    revalidatePath("/customers");
+    revalidatePath(`/customers/${id}`);
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }
 
 export async function deleteCustomer(id: string) {
-  await customerService.deleteCustomer(id);
-  revalidatePath("/customers");
-  revalidatePath("/today");
-  return { success: true };
+  try {
+    await customerService.deleteCustomer(id);
+    revalidatePath("/customers");
+    revalidatePath("/today");
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }
 
 export async function markCustomerPaid(customerId: string) {
-  await debtService.markCustomerPaid(customerId);
-  revalidatePath("/customers");
-  revalidatePath("/today");
-  return { success: true };
+  try {
+    await debtService.markCustomerPaid(customerId);
+    revalidatePath("/customers");
+    revalidatePath("/today");
+    return { success: true };
+  } catch (e) {
+    return { error: { _form: [getActionErrorMessage(e)] } };
+  }
 }

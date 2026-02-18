@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { toast } from "sonner";
 import { updateOrderStatus } from "@/actions/orders";
 import type { OrderStatus, PaymentStatus } from "@/types/database";
 
@@ -33,7 +34,10 @@ export function OrderDetailActions({ orderId, currentPaymentStatus, currentStatu
             key={opt.value}
             type="button"
             onClick={() => {
-              startTransition(() => void updateOrderStatus(orderId, { payment_status: opt.value }));
+              startTransition(async () => {
+                const result = await updateOrderStatus(orderId, { payment_status: opt.value });
+                if (result?.error) toast.error(Object.values(result.error).flat().join(" "));
+              });
             }}
             disabled={isPending}
             className={`min-h-[44px] px-4 rounded-xl font-medium border-2 transition-colors ${
@@ -54,7 +58,10 @@ export function OrderDetailActions({ orderId, currentPaymentStatus, currentStatu
               key={opt.value}
               type="button"
               onClick={() => {
-                startTransition(() => void updateOrderStatus(orderId, { status: opt.value }));
+                startTransition(async () => {
+                  const result = await updateOrderStatus(orderId, { status: opt.value });
+                  if (result?.error) toast.error(Object.values(result.error).flat().join(" "));
+                });
               }}
               disabled={isPending}
               className={`min-h-[44px] px-4 rounded-xl font-medium border-2 transition-colors ${

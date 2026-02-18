@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { toast } from "sonner";
 import { markCustomerPaid } from "@/actions/customers";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
@@ -15,8 +16,13 @@ export function MarkPaidButton({ customerId, customerName }: MarkPaidButtonProps
 
   const handleClick = () => {
     if (!confirm(`Tout marquer payé pour ${customerName} ?`)) return;
-    startTransition(() => {
-      markCustomerPaid(customerId);
+    startTransition(async () => {
+      const result = await markCustomerPaid(customerId);
+      if (result?.error) {
+        toast.error(Object.values(result.error).flat().join(" "));
+      } else {
+        toast.success("Tout marqué payé");
+      }
     });
   };
 
