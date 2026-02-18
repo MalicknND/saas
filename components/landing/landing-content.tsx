@@ -7,7 +7,6 @@ import {
   TrendingUp,
   Smartphone,
   ArrowRight,
-  Zap,
 } from "lucide-react";
 
 const features = [
@@ -43,29 +42,10 @@ const features = [
   },
 ];
 
-export function LandingPage() {
+export function LandingContent() {
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Navbar — desktop-first */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <Zap className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-lg text-slate-900">Mignardise</span>
-          </div>
-          <Link
-            href="/login"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors"
-          >
-            Se connecter
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </nav>
-
-      {/* Hero — large, centered, desktop layout */}
+    <>
+      {/* Hero */}
       <section className="pt-24 pb-20 px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight">
@@ -74,8 +54,8 @@ export function LandingPage() {
             <span className="text-primary">pour votre cuisine maison</span>
           </h1>
           <p className="mt-6 text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Mignardises, commandes événements, ventes WhatsApp ou Instagram — 
-            gardez la main sur votre cash sans compta compliquée.
+            Mignardises, commandes événements, ventes WhatsApp ou Instagram — gardez la main sur
+            votre cash sans compta compliquée.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -95,7 +75,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Features grid — 3 colonnes desktop */}
+      {/* Features */}
       <section className="py-20 px-6 lg:px-8 bg-white">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-slate-900 text-center">
@@ -115,12 +95,8 @@ export function LandingPage() {
                   <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <Icon className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="mt-4 font-semibold text-lg text-slate-900">
-                    {f.title}
-                  </h3>
-                  <p className="mt-2 text-slate-600 leading-relaxed">
-                    {f.description}
-                  </p>
+                  <h3 className="mt-4 font-semibold text-lg text-slate-900">{f.title}</h3>
+                  <p className="mt-2 text-slate-600 leading-relaxed">{f.description}</p>
                 </div>
               );
             })}
@@ -128,7 +104,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* CTA final */}
+      {/* CTA */}
       <section className="py-20 px-6 lg:px-8 bg-slate-900">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white">
@@ -146,13 +122,6 @@ export function LandingPage() {
           </Link>
         </div>
       </section>
-
-      {/* Footer minimal */}
-      <footer className="py-8 px-6 lg:px-8 border-t border-slate-200 bg-white">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-sm text-slate-500">Mignardise</span>
-        </div>
-      </footer>
-    </div>
+    </>
   );
 }
