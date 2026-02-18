@@ -113,7 +113,7 @@ export default async function OrdersPage() {
                     </TableCell>
                     <TableCell>
                       <Button variant="outline" size="sm" asChild>
-                        <Link href={`/orders/${o.id}`}>Détails</Link>
+                        <Link href={`/order/${o.id}`}>Détails</Link>
                       </Button>
                     </TableCell>
                   </TableRow>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import { OrderDetailActions } from "./order-detail-actions";
 import { DeleteOrderButton } from "./delete-order-button";
+import { OrderPaymentForm } from "@/features/orders/order-payment-form";
 
 const statusLabels: Record<string, string> = {
   pending: "En attente",
@@ -93,6 +94,11 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
       </Card>
 
       <DeleteOrderButton orderId={order.id} />
+
+      <div>
+        <h2 className="font-semibold mb-2">Ajouter un paiement</h2>
+        <OrderPaymentForm orderId={order.id} />
+      </div>
 
       {payments.length > 0 && (
         <div>

@@ -43,15 +43,17 @@ export async function updateOrder(id: string, formData: FormData) {
   }
 
   await orderService.updateOrder(id, parsed.data);
+  revalidatePath("/today");
   revalidatePath("/orders");
-  revalidatePath(`/orders/${id}`);
+  revalidatePath(`/order/${id}`);
   return { success: true };
 }
 
 export async function deleteOrder(id: string) {
   await orderService.deleteOrder(id);
+  revalidatePath("/today");
   revalidatePath("/orders");
-  revalidatePath("/dashboard");
+  revalidatePath(`/order/${id}`);
   return { success: true };
 }
 
@@ -61,6 +63,7 @@ export async function updateOrderStatus(
 ) {
   await orderService.updateOrder(id, updates);
   revalidatePath("/today");
+  revalidatePath("/orders");
   revalidatePath(`/order/${id}`);
   return { success: true };
 }
@@ -78,7 +81,8 @@ export async function addOrderPayment(formData: FormData) {
   }
 
   await orderService.addPayment(parsed.data);
+  revalidatePath("/today");
   revalidatePath("/orders");
-  revalidatePath(`/orders/${parsed.data.order_id}`);
+  revalidatePath(`/order/${parsed.data.order_id}`);
   return { success: true };
 }

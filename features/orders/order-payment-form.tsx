@@ -16,11 +16,11 @@ function SubmitButton() {
   );
 }
 
-interface PaymentFormProps {
+interface OrderPaymentFormProps {
   orderId: string;
 }
 
-export function PaymentForm({ orderId }: PaymentFormProps) {
+export function OrderPaymentForm({ orderId }: OrderPaymentFormProps) {
   const [state, formAction] = useActionState(async (_prev: unknown, formData: FormData) => {
     const result = await addOrderPayment(formData);
     return result;
